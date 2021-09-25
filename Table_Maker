@@ -1,0 +1,147 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+void Add(std::string& carBrand, std::string& carModel, std::string& carYear, std::string& carHP,
+ std::vector<std::string>& carInfo){
+    std::cout << "Enter the brand of the car: ";
+        std::cin >> carBrand;
+    std::cout << "Enter the model of the car: ";
+        std::cin >> carModel;
+    std::cout << "Enter the year of the car: ";
+        std::cin >> carYear;
+    std::cout << "Enter the horsepower of the car: ";
+        std::cin >> carHP;
+    std::cout << std::endl;
+
+    carInfo.push_back(carBrand);
+    carInfo.push_back(carModel);
+    carInfo.push_back(carYear);
+    carInfo.push_back(carHP);
+};
+
+void Print(std::vector<std::string>& carInfo){
+
+    std::cout << "Brand | Model | Year | Horsepower" << std::endl;
+
+    for(int i = 0; i < carInfo.size(); ++i){
+
+        if(i == (carInfo.size() - 1)){
+            std::cout << carInfo[i] << " $ \n";
+        }
+        
+        
+        else if ((i + 1)% 4 == 0){
+            std::cout << carInfo[i] << '\n';
+        }
+        
+        else{
+            std::cout << carInfo[i] << " | ";
+        }
+    }
+    
+};
+
+void Print_in_file(std::vector<std::string>& carInfo, std::ofstream& Filestream){
+
+    Filestream << "Brand | Model | Year | Horsepower" << std::endl;
+
+    for(int i = 0; i < carInfo.size(); ++i){
+        if (i == carInfo.size() - 1){
+            Filestream << carInfo[i] << " $ \n";    
+        }
+
+        else if((i + 1)% 4 == 0){
+            Filestream << carInfo[i] << '\n';
+        }
+        
+        else{
+            Filestream << carInfo[i] << " | ";
+        }
+    }
+    
+};
+
+void Export(std::vector<std::string>& carInfo,
+ std::string FileName = "CarInfo1.txt"){
+    std::ofstream FileStream;
+    FileStream.open(FileName);
+    Print_in_file(carInfo, FileStream);
+    FileStream.close();
+};
+
+void Import(std::vector<std::string>& carInfo){
+
+    std::string ImportFile;
+    std::string ImportedTable;
+
+    std::cout << "Which file would you like to import from? \n";
+    std::cin >> ImportFile;
+
+    std::ifstream ImpStream;
+    ImpStream.open(ImportFile);
+    std::getline(ImpStream, ImportedTable, '$');
+
+    std::cout << ImportedTable << '\n';
+};
+
+int main(){
+
+    int Operation;
+    std::string carBrand;
+    std::string carModel;
+    std::string carYear;
+    std::string carHP;
+    std::vector<std::string> carInfo;
+    std::string FileName;
+
+    do{ 
+    std::cout << "Select one of the follow operations:" << std::endl 
+    << "1. Add" << std::endl 
+    << "2. Print" << std::endl 
+    << "3. Export" << std::endl
+    << "4. Import" << std::endl
+    << "5. Break" << std::endl;
+
+
+    std::cout << std::endl << "Type the operation here: ";
+    std::cin >> Operation;
+
+    if (std::cin.fail()){
+        std::cout << "Please input a proper operation in the form of a number: \n";
+        std::cin.clear();
+        std::cin.ignore(1000000000, '\n');
+        std::cin >> Operation;
+
+    }
+    
+    if(Operation == 1) {
+        Add(carYear, carBrand, carModel, carHP, carInfo);
+    }
+
+    else if (Operation == 2){
+        Print(carInfo);
+    }
+
+    else if (Operation == 3){
+
+        std::cout << "Which file would you like to Export to? ";
+        std::cin >> FileName;
+
+        Export(carInfo, FileName);
+    }
+
+    else if(Operation == 4){ 
+        Import(carInfo);
+    }
+
+    else if(Operation == 5){
+        break;
+    }
+
+    else {
+        continue;
+    }
+} while (Operation != 5);
+return 0;
+}
