@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+void removeDuplicates(std::vector<std::string>& wordCount){
+         std::vector<std::string>::iterator dedup = wordCount.begin(); //dedup is the final element at the end of the deduping area
+        
+        for (auto curr = wordCount.begin(); curr != wordCount.end(); ++curr) { //curr is the current item being compared
+            if (*curr != *dedup) { //compares curr to the last element in dedup
+                ++dedup;            
+                *dedup = *curr;    //if they're not the same, dedup iterates ahead and makes the next item into that element
+            }
+        }
+        wordCount.erase(++dedup, wordCount.end());
+     };
+
+int main() {
+
+    std::string inputSentence;
+    std::vector<std::string> wordCount;
+     
+   
+    std::cout << "Input a sentence here: \n";
+    std::getline (std::cin, inputSentence);
+
+    std::cout << "Your sentence is: " << inputSentence << std::endl;
+
+       int last_space = 0;
+
+        for (auto i = 0; i < inputSentence.size(); ++i){
+            char c = inputSentence[i];
+            if ( c == ' ') {
+                wordCount.push_back(inputSentence.substr(last_space, i - last_space));
+                last_space = i+1;
+            }
+        }
+
+        wordCount.push_back(inputSentence.substr(last_space));
+
+        std::cout << "Number of words: " << wordCount.size() << std::endl;
+
+        std::sort(wordCount.begin(), wordCount.end());
+
+            removeDuplicates(wordCount);
+
+            for (auto i = 0; i < wordCount.size(); ++i){
+                std::cout << wordCount[i] << std::endl;
+                }
+
+    return 0;
+}
