@@ -74,6 +74,7 @@ void Import(std::vector<std::string>& carInfo){
 
     std::string ImportFile;
     std::string ImportedTable;
+    int last_space = 0;
 
     std::cout << "Which file would you like to import from? \n";
     std::cin >> ImportFile;
@@ -82,7 +83,16 @@ void Import(std::vector<std::string>& carInfo){
     ImpStream.open(ImportFile);
     std::getline(ImpStream, ImportedTable, '$');
 
-    std::cout << ImportedTable << '\n';
+    std::cout << ImportedTable << '\n'; //this is just for debugging and seeing if I imported the right table lmao
+
+    for (int i = 34; i < ImportedTable.size(); ++i) {
+        char c = ImportedTable[i];
+        if (char c = '|'){
+            carInfo.push_back(ImportedTable.substr(last_space, i - last_space));
+            last_space = i+2;
+        }
+    }
+    std::cout << "The elements of the imported table are now stored in the new program. \n";
 };
 
 int main(){
